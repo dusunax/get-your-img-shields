@@ -38,7 +38,7 @@ export const getImgShields = async ({
   }, 500);
 
   try {
-    await page.goto(url, { waitUntil: "networkidle", timeout: 5000 });
+    await page.goto(url, { waitUntil: "networkidle", timeout: 15000 });
   } catch (error) {
     endConnection(browser, loadingInterval);
     return {
