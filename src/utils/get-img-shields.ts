@@ -1,6 +1,7 @@
+import puppeteer, { type Browser, type Page } from "puppeteer";
 import puppeteerCore, {
-  type Browser ,
-  type Page,
+  type Browser as BrowserCore,
+  type Page as PageCore,
   ElementHandle,
 } from "puppeteer-core";
 import chromium from "@sparticuz/chromium-min";
@@ -20,15 +21,17 @@ export const maxDuration = 60;
 
 export const getImgShields = async (lib: string) => {
   const libName = lib.replace(/ /g, "%20");
-  const libNameLowercased = lib.toLowerCase().replace(/ /g, "");
   const url = `https://simpleicons.org/?q=${libName}`;
-  
+
   chromium.setGraphicsMode = false;
-  let browser: Browser;
-  let page: Page;
+  let browser: Browser | BrowserCore;
+  let page: Page | PageCore;
 
   try {
-    if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
+    if (
+      process.env.NODE_ENV === "production" ||
+      process.env.VERCEL_ENV === "production"
+    ) {
       browser = await puppeteerCore.launch({
         executablePath: await chromium.executablePath(),
         args: chromium.args,
@@ -36,7 +39,7 @@ export const getImgShields = async (lib: string) => {
         defaultViewport: chromium.defaultViewport,
       });
     } else {
-      browser = await puppeteerCore.launch({
+      browser = await puppeteer.launch({
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
@@ -46,7 +49,7 @@ export const getImgShields = async (lib: string) => {
       error: ERRORS.FAILED_TO_LAUNCH_BROWSER + ": " + (error as Error).message,
     };
   }
-  
+
   try {
     page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle0", timeout: 20000 });
@@ -54,7 +57,9 @@ export const getImgShields = async (lib: string) => {
     await browser.close();
     return {
       error:
-      ERRORS.FAILED_TO_CONNECT_IMG_SHIELDS_IO + ": " + (error as Error).message,
+        ERRORS.FAILED_TO_CONNECT_IMG_SHIELDS_IO +
+        ": " +
+        (error as Error).message,
     };
   }
 
@@ -66,36 +71,40 @@ export const getImgShields = async (lib: string) => {
         error: ERRORS.FAILED_TO_LOAD_PAGE,
       };
     }
-    
+
     const button = (await page.$(
       "li:first-of-type div button"
     )) as ElementHandle<HTMLButtonElement>;
+    const h2 = (await page.$(
+      "li:first-of-type h2"
+    )) as ElementHandle<HTMLHeadingElement>;
 
-    if (!button) {
+    if (!button || !h2) {
       await browser.close();
       return {
         error: ERRORS.LIB_NOT_FOUND_IN_IMG_SHIELDS_IO.replace("$lib", lib),
       };
     }
 
-    const text = await button.evaluate((el) => el.textContent);
-    if (!text) {
+    const colorText = await button.evaluate((el) => el.textContent);
+    const skillText = await h2.evaluate((el) => el.textContent);
+
+    if (!colorText || !skillText) {
       await browser.close();
       return {
         error: ERRORS.FAILED_TO_GET_COLOR_TEXT,
       };
     }
 
-    const color = text.split("#")[1];
-    const markdown = `![${lib}](https://img.shields.io/badge/${libName}-${color}?style=flat-square&logo=${libNameLowercased}&logoColor=white)`;
+    const color = colorText.split("#")[1];
+    const markdown = `![${skillText}](https://img.shields.io/badge/${skillText}-${color}?style=flat-square&logo=${skillText}&logoColor=white)`;
 
     await browser.close();
     return { markdown };
-
   } catch (error) {
     await browser.close();
     return {
-      error: ERRORS.FAILED_TO_LOAD_IMAGE,
+      error: ERRORS.FAILED_TO_LOAD_IMAGE + ": " + (error as Error).message,
     };
   }
 };
