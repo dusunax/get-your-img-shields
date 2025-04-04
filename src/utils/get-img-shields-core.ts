@@ -1,4 +1,8 @@
-import puppeteer, { ElementHandle, type Browser, type Page } from "puppeteer";
+import puppeteerCore, {
+  type Browser as BrowserCore,
+  type Page as PageCore,
+  ElementHandle,
+} from "puppeteer-core";
 import chromium from "@sparticuz/chromium-min";
 
 const ERRORS = {
@@ -14,18 +18,20 @@ const ERRORS = {
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-export const getImgShields = async (lib: string) => {
+export const getImgShieldsCore = async (lib: string) => {
   const libName = lib.replace(/ /g, "%20");
   const url = `https://simpleicons.org/?q=${libName}`;
 
   chromium.setGraphicsMode = false;
-  let browser: Browser ;
-  let page: Page;
+  let browser: BrowserCore;
+  let page: PageCore;
 
   try {
-    browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    browser = await puppeteerCore.launch({
+      executablePath: await chromium.executablePath(),
+      args: chromium.args,
+      headless: chromium.headless,
+      defaultViewport: chromium.defaultViewport,
     });
   } catch (error) {
     return {
