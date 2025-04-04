@@ -1,5 +1,5 @@
 import chromium from "@sparticuz/chromium";
-import { chromium as playwrightChromium } from "playwright";
+import { chromium as playwright } from "playwright";
 
 const ERRORS = {
   FAILED_TO_LOAD_IMG_SHIELDS_IO: "⛔️ Failed to load img.shields.io.",
@@ -19,32 +19,36 @@ export const getImgShields = async ({ lib }: GetImgShieldsProps) => {
   const libNameLowercased = lib.toLowerCase().replace(/ /g, "");
   const url = `https://simpleicons.org/?q=${libName}`;
 
-  const browser = await playwrightChromium.launch({
-    headless: true,
-    executablePath: await chromium.executablePath(),
+  const browser = await playwright.launch({
     args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: true,
   });
-  const page = await browser.newPage();
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
   try {
-    await page.goto(url, { waitUntil: "networkidle", timeout: 15000 });
+    await page.goto(url);
   } catch (error) {
+    await page.close();
+    await browser.close();
     return {
-      error:
-        ERRORS.FAILED_TO_LOAD_IMG_SHIELDS_IO +
-        "\n  " +
-        (error as Error).message,
+      error: ERRORS.FAILED_TO_LOAD_IMG_SHIELDS_IO,
     };
   }
 
   const html = await page.content();
   if (html.includes("Loading...")) {
+    await page.close();
+    await browser.close();
     return {
       error: ERRORS.FAILED_TO_LOAD_PAGE,
     };
   }
   const elements = await page.getByText("#");
   if (!elements || !(await elements.count())) {
+    await page.close();
+    await browser.close();
     return {
       error: ERRORS.LIB_NOT_FOUND_IN_IMG_SHIELDS_IO.replace("$lib", lib),
     };
@@ -54,6 +58,8 @@ export const getImgShields = async ({ lib }: GetImgShieldsProps) => {
   const text = await target.textContent();
 
   if (!text) {
+    await page.close();
+    await browser.close();
     return {
       error: ERRORS.FAILED_TO_GET_TEXT,
     };
@@ -61,7 +67,8 @@ export const getImgShields = async ({ lib }: GetImgShieldsProps) => {
 
   const color = text.split("#")[1];
   const markdown = `![${lib}](https://img.shields.io/badge/${libName}-${color}?style=flat-square&logo=${libNameLowercased}&logoColor=white)`;
-
-  console.log("\n📋 Skill tag copied to clipboard.");
+  
+  await page.close();
+  await browser.close();
   return { markdown };
 };

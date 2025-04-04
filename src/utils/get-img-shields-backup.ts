@@ -20,7 +20,7 @@ interface GetImgShieldsProps {
   copy?: boolean;
 }
 
-export const getImgShields = async ({
+export const getImgShieldsOnLocal = async ({
   lib,
   copy = true,
 }: GetImgShieldsProps) => {

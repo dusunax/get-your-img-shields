@@ -31,6 +31,7 @@ const GetYourImgShields = () => {
         throw new Error(data.error);
       }
       setImgShield(data.markdown);
+      setError("");
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error fetching img shield:", error.message);
