@@ -3,7 +3,7 @@ import puppeteerCore, {
   type Page as PageCore,
   ElementHandle,
 } from "puppeteer-core";
-import chromium from "@sparticuz/chromium-min";
+import chromium from "@sparticuz/chromium";
 
 const ERRORS = {
   FAILED_TO_LAUNCH_BROWSER: "⛔️ Failed to launch browser.",
