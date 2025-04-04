@@ -1,4 +1,5 @@
-import { chromium, type Browser, type Page } from "playwright";
+import { chromium, type Browser, type Page } from "playwright-core";
+import chromiumBinary from "@sparticuz/chromium-min";
 
 const ERRORS = {
   FAILED_TO_LAUNCH_BROWSER: "⛔️ Failed to launch browser.",
@@ -10,7 +11,7 @@ const ERRORS = {
   FAILED_TO_LOAD_IMAGE: "⛔️ Failed to load image.",
 };
 
-const getImgShieldsPlaywright = async (lib: string) => {
+const getImgShieldsPlaywrightCore = async (lib: string) => {
   const libName = lib.replace(/ /g, "%20");
   const url = `https://simpleicons.org/?q=${libName}`;
 
@@ -18,9 +19,17 @@ const getImgShieldsPlaywright = async (lib: string) => {
   let page: Page;
 
   try {
+    const executablePath = await chromiumBinary.executablePath();
+    if (!executablePath) {
+      return {
+        error: "Failed to get executable path",
+        executablePath,
+      };
+    }
     browser = await chromium.launch({
+      args: chromiumBinary.args,
+      executablePath,
       headless: true,
-      args: ["--no-sandbox", "--disable-gpu", "--single-process"],
     });
   } catch (error) {
     return {
@@ -51,7 +60,12 @@ const getImgShieldsPlaywright = async (lib: string) => {
     }
     const colorElements = await page.getByText("#");
     const skillElements = await page.getByRole("heading", { level: 2 });
-    if (!colorElements || !(await colorElements.count()) || !skillElements || !(await skillElements.count())) {
+    if (
+      !colorElements ||
+      !(await colorElements.count()) ||
+      !skillElements ||
+      !(await skillElements.count())
+    ) {
       return {
         error: ERRORS.LIB_NOT_FOUND_IN_IMG_SHIELDS_IO.replace("$lib", lib),
       };
@@ -79,4 +93,4 @@ const getImgShieldsPlaywright = async (lib: string) => {
   }
 };
 
-export default getImgShieldsPlaywright;
+export default getImgShieldsPlaywrightCore;
