@@ -3,7 +3,7 @@ import puppeteerCore, {
   type Page as PageCore,
   ElementHandle,
 } from "puppeteer-core";
-import chromium from "@sparticuz/chromium";
+import chromium from "@sparticuz/chromium-min";
 
 const ERRORS = {
   FAILED_TO_LAUNCH_BROWSER: "⛔️ Failed to launch browser.",
@@ -20,22 +20,25 @@ export const dynamic = "force-dynamic";
 export const getImgShieldsCore = async (lib: string) => {
   const libName = lib.replace(/ /g, "%20");
   const url = `https://simpleicons.org/?q=${libName}`;
-  
+
   chromium.setGraphicsMode = false;
   let browser: BrowserCore;
   let page: PageCore;
 
   try {
-    const executablePath = await chromium.executablePath();
+    const executablePath = await chromium.executablePath(
+      "https://github.com/Sparticuz/chromium/releases/download/v122.0.0/chromium-v122.0.0-pack.tar"
+    );
     if (!executablePath) {
       return {
-        error: "Failed to get executable path", executablePath,
+        error: "Failed to get executable path",
+        executablePath,
       };
     }
     browser = await puppeteerCore.launch({
       executablePath,
       args: chromium.args,
-      headless: chromium.headless,
+      headless: chromium.headless === "chrome-headless-shell" ? false : true,
       defaultViewport: chromium.defaultViewport,
     });
   } catch (error) {

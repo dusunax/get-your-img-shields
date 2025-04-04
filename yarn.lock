@@ -367,13 +367,13 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.11.0.tgz#75dce8e972f90bba488e2b0cc677fb233aa357ab"
   integrity sha512-zxnHvoMQVqewTJr/W4pKjF0bMGiKJv1WX7bSrkl46Hg0QjESbzBROWK0Wg4RphzSOS5Jiy7eFimmM3UgMrMZbQ==
 
-"@sparticuz/chromium-min@131.0.1":
-  version "131.0.1"
-  resolved "https://registry.yarnpkg.com/@sparticuz/chromium-min/-/chromium-min-131.0.1.tgz#2aa2e176d120f6b37a02edce589d2ec4552d46cd"
-  integrity sha512-kQqKflJtjcBb8aA1b6L4dhU/8UbCJHcjb3au8cjBhKAG7nzqh//92rHCB6ULkgV0CMEQmfp3LDBQ/W8Wg2k+Yg==
+"@sparticuz/chromium-min@122.0.0":
+  version "122.0.0"
+  resolved "https://registry.yarnpkg.com/@sparticuz/chromium-min/-/chromium-min-122.0.0.tgz#2d8e7fc88ad0231d07d3e9f3ab205284e77a918a"
+  integrity sha512-0EcOK6JqCA4iAutAQbAQPkJXLMXxkJ/jVJgQc7xz3rPgecLOpu8zji286qYthe/ux7YxtVAVlRHJeg1n2EVWiw==
   dependencies:
-    follow-redirects "^1.15.9"
-    tar-fs "^3.0.6"
+    follow-redirects "^1.15.5"
+    tar-fs "^3.0.5"
 
 "@sparticuz/chromium@^133.0.0":
   version "133.0.0"
@@ -1694,7 +1694,7 @@ flatted@^3.2.9:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.3.3.tgz#67c8fad95454a7c7abebf74bb78ee74a44023358"
   integrity sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==
 
-follow-redirects@^1.15.9:
+follow-redirects@^1.15.5, follow-redirects@^1.15.9:
   version "1.15.9"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.9.tgz#a604fa10e443bf98ca94228d9eebcc2e8a2c8ee1"
   integrity sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==
@@ -3179,7 +3179,7 @@ tapable@^2.2.0:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
   integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
 
-tar-fs@^3.0.6, tar-fs@^3.0.8:
+tar-fs@^3.0.5, tar-fs@^3.0.8:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-3.0.8.tgz#8f62012537d5ff89252d01e48690dc4ebed33ab7"
   integrity sha512-ZoROL70jptorGAlgAYiLoBLItEKw/fUxg9BSYK/dF/GAGYFJOJJJMvjPAKDJraCXFwadD456FCuvLWgfhMsPwg==

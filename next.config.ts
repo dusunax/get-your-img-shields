@@ -9,7 +9,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["puppeteer-core", "@sparticuz/chromium-min"],
+  serverExternalPackages: [
+    "puppeteer-core",
+    "@sparticuz/chromium-min",
+    "@sparticuz/chromium",
+  ],
 };
 
 export default nextConfig;
