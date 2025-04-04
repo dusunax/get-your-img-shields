@@ -85,6 +85,7 @@ const GetYourImgShields = () => {
             target="_blank"
             type="button"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={imgShield.split("(")[1].split(")")[0]}
               alt="Skill Shield"

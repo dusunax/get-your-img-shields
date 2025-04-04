@@ -1,5 +1,5 @@
-import { chromium } from "playwright";
-import { copyToClipboard } from "./copy-to-clipboard";
+import { Browser, chromium } from "playwright";
+import { copyToClipboardOnClient } from "./copy-to-clipboard-on-client";
 
 const ERRORS = {
   FAILED_TO_LOAD_IMG_SHIELDS_IO: "⛔️ Failed to load img.shields.io.",
@@ -10,7 +10,7 @@ const ERRORS = {
     '⛔️ lib "$lib" is not found in img.shields.io.',
 };
 
-const endConnection = async (browser: any, interval: any) => {
+const endConnection = async (browser: Browser, interval: NodeJS.Timeout) => {
   clearInterval(interval);
   await browser.close();
 };
@@ -79,7 +79,7 @@ export const getImgShields = async ({
   const markdown = `![${lib}](https://img.shields.io/badge/${libName}-${color}?style=flat-square&logo=${libNameLowercased}&logoColor=white)`;
 
   if (copy) {
-    copyToClipboard(markdown);
+    copyToClipboardOnClient(markdown);
   }
 
   await endConnection(browser, loadingInterval);

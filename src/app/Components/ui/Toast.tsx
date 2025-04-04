@@ -36,7 +36,7 @@ const Toast = ({
   useEffect(() => {
     const timer = setTimeout(() => setIsOpen(false), duration);
     return () => clearTimeout(timer);
-  }, [duration, isOpen]);
+  }, [duration, isOpen, setIsOpen]);
 
   return (
     <AnimatePresence>

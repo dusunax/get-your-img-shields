@@ -1,11 +1,11 @@
-const navigator: any = {};
-const document: any = {};
+declare const navigator: Navigator;
+declare const document: Document;
 
 export const copyToClipboardOnClient = async (text: string) => {
   try {
-    if (navigator && "clipboard" in navigator) {
+    if (typeof navigator !== "undefined" && "clipboard" in navigator) {
       await navigator.clipboard.writeText(text);
-    } else if (document && document.body) {
+    } else if (typeof document !== "undefined" && document.body) {
       const textarea = document.createElement("textarea");
       textarea.value = text;
       document.body.appendChild(textarea);
@@ -15,10 +15,6 @@ export const copyToClipboardOnClient = async (text: string) => {
     }
     console.log("\n📋 Skill tag copied to clipboard.");
   } catch (error) {
-    if (error instanceof Error) {
-      console.error("\n⚠️ Failed to copy:", error.message);
-    } else {
-      console.error("\n⚠️ Failed to copy:", error);
-    }
+    console.error("\n⚠️ Failed to copy:", error);
   }
 };
