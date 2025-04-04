@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const result = await getImgShields({ lib });
+    console.log(result);
     return NextResponse.json(result);
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
