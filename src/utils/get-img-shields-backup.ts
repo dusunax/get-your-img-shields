@@ -28,7 +28,10 @@ export const getImgShields = async ({
   const libNameLowercased = lib.toLowerCase().replace(/ /g, "");
   const url = `https://simpleicons.org/?q=${libName}`;
 
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
   const page = await browser.newPage();
 
   let dots = "";
