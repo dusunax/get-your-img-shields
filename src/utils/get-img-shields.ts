@@ -18,14 +18,11 @@ export const getImgShields = async ({ lib }: GetImgShieldsProps) => {
   const libNameLowercased = lib.toLowerCase().replace(/ /g, "");
   const url = `https://simpleicons.org/?q=${libName}`;
 
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
   const page = await browser.newPage();
-
-  let dots = "";
-  const loadingInterval = setInterval(() => {
-    dots = dots.length < 10 ? dots + "." : "";
-    process.stdout.write(`\r🔍 Searching${dots}`);
-  }, 500);
 
   try {
     await page.goto(url, { waitUntil: "networkidle", timeout: 15000 });
@@ -51,7 +48,6 @@ export const getImgShields = async ({ lib }: GetImgShieldsProps) => {
     };
   }
 
-  clearInterval(loadingInterval);
   const target = elements.first();
   const text = await target.textContent();
 
