@@ -19,7 +19,7 @@ export const getImgShields = async (lib: string) => {
   const url = `https://simpleicons.org/?q=${libName}`;
 
   chromium.setGraphicsMode = false;
-  let browser: Browser ;
+  let browser: Browser;
   let page: Page;
 
   try {

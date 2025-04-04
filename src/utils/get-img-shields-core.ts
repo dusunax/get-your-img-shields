@@ -16,19 +16,24 @@ const ERRORS = {
 };
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
 
 export const getImgShieldsCore = async (lib: string) => {
   const libName = lib.replace(/ /g, "%20");
   const url = `https://simpleicons.org/?q=${libName}`;
-
+  
   chromium.setGraphicsMode = false;
   let browser: BrowserCore;
   let page: PageCore;
 
   try {
+    const executablePath = await chromium.executablePath();
+    if (!executablePath) {
+      return {
+        error: "Failed to get executable path", executablePath,
+      };
+    }
     browser = await puppeteerCore.launch({
-      executablePath: await chromium.executablePath(),
+      executablePath,
       args: chromium.args,
       headless: chromium.headless,
       defaultViewport: chromium.defaultViewport,
@@ -55,7 +60,6 @@ export const getImgShieldsCore = async (lib: string) => {
   try {
     const html = await page.content();
     if (html.includes("Loading...")) {
-      await browser.close();
       return {
         error: ERRORS.FAILED_TO_LOAD_PAGE,
       };
@@ -69,7 +73,6 @@ export const getImgShieldsCore = async (lib: string) => {
     )) as ElementHandle<HTMLHeadingElement>;
 
     if (!button || !h2) {
-      await browser.close();
       return {
         error: ERRORS.LIB_NOT_FOUND_IN_IMG_SHIELDS_IO.replace("$lib", lib),
       };
@@ -79,7 +82,6 @@ export const getImgShieldsCore = async (lib: string) => {
     const skillText = await h2.evaluate((el) => el.textContent);
 
     if (!colorText || !skillText) {
-      await browser.close();
       return {
         error: ERRORS.FAILED_TO_GET_COLOR_TEXT,
       };
@@ -88,12 +90,12 @@ export const getImgShieldsCore = async (lib: string) => {
     const color = colorText.split("#")[1];
     const markdown = `![${skillText}](https://img.shields.io/badge/${skillText}-${color}?style=flat-square&logo=${skillText}&logoColor=white)`;
 
-    await browser.close();
     return { markdown };
   } catch (error) {
-    await browser.close();
     return {
       error: ERRORS.FAILED_TO_LOAD_IMAGE + ": " + (error as Error).message,
     };
+  } finally {
+    await browser.close();
   }
 };
