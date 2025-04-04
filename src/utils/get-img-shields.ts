@@ -33,7 +33,8 @@ export const getImgShields = async ({ lib }: GetImgShieldsProps) => {
     await page.close();
     await browser.close();
     return {
-      error: ERRORS.FAILED_TO_LOAD_IMG_SHIELDS_IO,
+      error:
+        ERRORS.FAILED_TO_LOAD_IMG_SHIELDS_IO + ": " + (error as Error).message,
     };
   }
 
@@ -67,7 +68,7 @@ export const getImgShields = async ({ lib }: GetImgShieldsProps) => {
 
   const color = text.split("#")[1];
   const markdown = `![${lib}](https://img.shields.io/badge/${libName}-${color}?style=flat-square&logo=${libNameLowercased}&logoColor=white)`;
-  
+
   await page.close();
   await browser.close();
   return { markdown };
