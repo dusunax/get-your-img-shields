@@ -1,7 +1,7 @@
 {
   "name": "get-your-img-shields",
   "version": "0.1.0",
-  "description": "Get your skill img shields from img.shields.io easily.",
+  "description": "Get your skill badge from img.shields.io easily.",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,11 +11,14 @@
   },
   "dependencies": {
     "@sparticuz/chromium": "^133.0.0",
+    "@sparticuz/chromium-min": "131.0.1",
     "framer-motion": "^12.6.3",
     "lucide-react": "^0.487.0",
     "next": "15.2.4",
     "next-themes": "^0.4.6",
     "playwright": "^1.51.1",
+    "puppeteer": "^24.6.0",
+    "puppeteer-core": "^24.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

@@ -1,9 +1,9 @@
 "use client";
-import { copyToClipboardOnClient } from "@/utils/copy-to-clipboard-on-client";
 import { useCallback, useEffect, useState } from "react";
-import Button from "./ui/Button";
-import Instruction from "./Instruction";
 import { cn } from "@/utils/cn";
+import { copyToClipboardOnClient } from "@/utils/copy-to-clipboard-on-client";
+import Instruction from "./Instruction";
+import Button from "./ui/Button";
 import Toast from "./ui/Toast";
 
 const GetYourImgShields = () => {
@@ -94,7 +94,7 @@ const GetYourImgShields = () => {
           </a>
 
           <div className="flex gap-2">
-            <div className="text-xs bg-gray-100 dark:bg-gray-800 flex justify-center items-center rounded-md p-4 break-all">
+            <div className="text-xs flex-1 bg-gray-100 dark:bg-gray-800 flex justify-center items-center rounded-md p-4 break-all">
               {imgShield}
             </div>
             <Button
