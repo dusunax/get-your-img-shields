@@ -3,7 +3,7 @@ import puppeteerCore, {
   type Page as PageCore,
   ElementHandle,
 } from "puppeteer-core";
-import chromium from "@sparticuz/chromium-min";
+import chromium from "@sparticuz/chromium";
 
 const ERRORS = {
   FAILED_TO_LAUNCH_BROWSER: "⛔️ Failed to launch browser.",
@@ -38,7 +38,7 @@ export const getImgShieldsCore = async (lib: string) => {
     browser = await puppeteerCore.launch({
       executablePath,
       args: chromium.args,
-      headless: chromium.headless === "chrome-headless-shell" ? false : true,
+      headless: chromium.headless as boolean | "shell" | undefined,
       defaultViewport: chromium.defaultViewport,
     });
   } catch (error) {
