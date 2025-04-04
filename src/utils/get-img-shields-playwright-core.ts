@@ -1,4 +1,9 @@
-import { chromium, type Browser, type Page } from "playwright-core";
+import {
+  chromium as chromiumCore,
+  type Browser,
+  type Page,
+} from "playwright-core";
+import { chromium } from "playwright";
 
 const ERRORS = {
   FAILED_TO_LAUNCH_BROWSER: "⛔️ Failed to launch browser.",
@@ -18,9 +23,8 @@ const getImgShieldsPlaywrightCore = async (lib: string) => {
   let page: Page;
 
   try {
-    const executablePath =
-      "https://github.com/Sparticuz/chromium/releases/download/v122.0.0/chromium-v122.0.0-pack.tar";
-    browser = await chromium.launch({
+    const executablePath = await chromium.executablePath();
+    browser = await chromiumCore.launch({
       args: ["--no-sandbox", "--disable-gpu", "--single-process"],
       executablePath,
       headless: true,
