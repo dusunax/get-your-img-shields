@@ -1,4 +1,5 @@
-import { chromium } from "playwright";
+import chromium from "@sparticuz/chromium";
+import { chromium as playwrightChromium } from "playwright";
 
 const ERRORS = {
   FAILED_TO_LOAD_IMG_SHIELDS_IO: "⛔️ Failed to load img.shields.io.",
@@ -18,9 +19,10 @@ export const getImgShields = async ({ lib }: GetImgShieldsProps) => {
   const libNameLowercased = lib.toLowerCase().replace(/ /g, "");
   const url = `https://simpleicons.org/?q=${libName}`;
 
-  const browser = await chromium.launch({
+  const browser = await playwrightChromium.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    executablePath: await chromium.executablePath(),
+    args: chromium.args,
   });
   const page = await browser.newPage();
 
