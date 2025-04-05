@@ -2,14 +2,23 @@
 
 📋 Copy skill badges from img.shields.io easily.
 
+<img src="https://github.com/user-attachments/assets/b8d889f3-95de-4cc3-99d1-f800f998495d" width="400"/>
+
+## Installation
+```
+yarn install
+yarn dev
+```
+Then open http://localhost:3000 in your browser.
+
 ## How to use
 
-1. Go to the [Get Your Img Shields](https://get-your-img-shields.vercel.app/) website.
+1. Currently only works locally.🥲 ~~Go to the [Get Your Img Shields](https://get-your-img-shields.vercel.app/) website.~~ 
 2. Enter the name of the skill & library you want to get the img shield for.
 3. Click on the "Get Img Shield" button.
 4. The img shield will be displayed on the screen soon. Press the "Copy" button!
 
-## Examples
+## Badge Examples
 
 ![Zustand](https://img.shields.io/badge/React%20Hook%20Form-ec5990?style=flat-square&logo=reacthookform&logoColor=white)
 ![Recoil](https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white)
