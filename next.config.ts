@@ -9,7 +9,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["playwright", "playwright-core"],
+  serverExternalPackages: [
+    "playwright-core",
+    "@sparticuz/chromium-min",
+    "puppeteer-core",
+  ],
 };
 
 export default nextConfig;

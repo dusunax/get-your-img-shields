@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import getImgShieldsPlaywrightCore from "@/utils/get-img-shields-playwright-core";
 import getImgShieldsPlaywright from "@/utils/get-img-shields-playwright";
+import getImgShieldsCore from "@/utils/get-img-shields-core";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     if (process.env.NODE_ENV === "development") {
       result = await getImgShieldsPlaywright(lib);
     } else {
-      result = await getImgShieldsPlaywrightCore(lib);
+      result = await getImgShieldsCore(lib);
     }
     return NextResponse.json(result);
   } catch (error) {

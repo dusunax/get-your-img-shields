@@ -1,9 +1,5 @@
-import {
-  chromium as chromiumCore,
-  type Browser,
-  type Page,
-} from "playwright-core";
-import { chromium } from "playwright";
+import { chromium, type Browser, type Page } from "playwright-core";
+import chromiumMin from "@sparticuz/chromium-min";
 
 const ERRORS = {
   FAILED_TO_LAUNCH_BROWSER: "⛔️ Failed to launch browser.",
@@ -23,11 +19,12 @@ const getImgShieldsPlaywrightCore = async (lib: string) => {
   let page: Page;
 
   try {
-    const executablePath = await chromium.executablePath();
-    browser = await chromiumCore.launch({
-      args: ["--no-sandbox", "--disable-gpu", "--single-process"],
-      executablePath,
-      headless: true,
+    // const chromiumPack =
+    // "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar";
+    browser = await chromium.launch({
+      args: chromiumMin.args,
+      // executablePath: await chromium.executablePath(chromiumPack),
+      headless: chromiumMin.headless as boolean | undefined,
     });
   } catch (error) {
     return {
