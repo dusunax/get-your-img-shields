@@ -4,6 +4,7 @@ import puppeteerCore, {
   ElementHandle,
 } from "puppeteer-core";
 import chromium from "@sparticuz/chromium-min";
+import { replaceSpace, setMarkdown } from "./formatText";
 
 const ERRORS = {
   FAILED_TO_LAUNCH_BROWSER: "⛔️ Failed to launch browser.",
@@ -18,7 +19,7 @@ const ERRORS = {
 export const dynamic = "force-dynamic";
 
 const getImgShieldsCore = async (lib: string) => {
-  const libName = lib.replace(/ /g, "%20");
+  const libName = replaceSpace(lib);
   const url = `https://simpleicons.org/?q=${libName}`;
 
   chromium.setGraphicsMode = false;
@@ -82,16 +83,16 @@ const getImgShieldsCore = async (lib: string) => {
     }
 
     const colorText = await button.evaluate((el) => el.textContent);
-    const skillText = await h2.evaluate((el) => el.textContent);
+    const libName = await h2.evaluate((el) => el.textContent);
 
-    if (!colorText || !skillText) {
+    if (!colorText || !libName) {
       return {
         error: ERRORS.FAILED_TO_GET_COLOR_TEXT,
       };
     }
 
-    const color = colorText.split("#")[1];
-    const markdown = `![${skillText}](https://img.shields.io/badge/${skillText}-${color}?style=flat-square&logo=${skillText}&logoColor=white)`;
+    const colorWithoutHash = colorText.split("#")[1];
+    const markdown = setMarkdown(libName, colorWithoutHash);
 
     return { markdown };
   } catch (error) {

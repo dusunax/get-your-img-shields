@@ -1,4 +1,5 @@
 import { chromium, type Browser, type Page } from "playwright";
+import { replaceSpace, setMarkdown } from "./formatText";
 
 const ERRORS = {
   FAILED_TO_LAUNCH_BROWSER: "⛔️ Failed to launch browser.",
@@ -11,7 +12,7 @@ const ERRORS = {
 };
 
 const getImgShieldsPlaywright = async (lib: string) => {
-  const libName = lib.replace(/ /g, "%20");
+  const libName = replaceSpace(lib);
   const url = `https://simpleicons.org/?q=${libName}`;
 
   let browser: Browser;
@@ -50,24 +51,29 @@ const getImgShieldsPlaywright = async (lib: string) => {
       };
     }
     const colorElements = await page.getByText("#");
-    const skillElements = await page.getByRole("heading", { level: 2 });
-    if (!colorElements || !(await colorElements.count()) || !skillElements || !(await skillElements.count())) {
+    const libNameElements = await page.getByRole("heading", { level: 2 });
+    if (
+      !colorElements ||
+      !(await colorElements.count()) ||
+      !libNameElements ||
+      !(await libNameElements.count())
+    ) {
       return {
         error: ERRORS.LIB_NOT_FOUND_IN_IMG_SHIELDS_IO.replace("$lib", lib),
       };
     }
     const firstColor = colorElements.first();
-    const firstSkill = skillElements.first();
+    const firstLibName = libNameElements.first();
     const colorText = await firstColor.textContent();
-    const skillText = await firstSkill.textContent();
-    if (!colorText || !skillText) {
+    const libName = await firstLibName.textContent();
+    if (!colorText || !libName) {
       return {
         error: ERRORS.FAILED_TO_GET_COLOR_TEXT,
       };
     }
 
-    const withoutHash = colorText.split("#")[1];
-    const markdown = `![${skillText}](https://img.shields.io/badge/${skillText}-${withoutHash}?style=flat-square&logo=${skillText}&logoColor=white)`;
+    const colorWithoutHash = colorText.split("#")[1];
+    const markdown = setMarkdown(libName, colorWithoutHash);
 
     return { markdown };
   } catch (error) {
